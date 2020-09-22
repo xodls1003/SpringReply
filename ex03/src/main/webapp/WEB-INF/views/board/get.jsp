@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../includes/header.jsp"%>
 
-
 <div class="row">
   <div class="col-lg-12">
     <h1 class="page-header">Board Read</h1>
@@ -56,7 +55,7 @@
 </form> --%>
 
 
-<form id='operForm' action="/boad/modify" method="get">
+<form id='operForm' action="/board/modify" method="get">
   <input type='hidden' id='bno' name='bno' value='<c:out value="${board.bno}"/>'>
   <input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
   <input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
@@ -76,6 +75,68 @@
   <!-- end panel -->
 </div>
 <!-- /.row -->
+
+
+<script type = "text/javascript" src="/resources/js/reply.js"></script>
+
+<script>
+	console.log("============");
+	console.log("JS TEST");
+	
+	var bnoValue = '<c:out value="${board.bno}" />';
+	
+	//for replyService add test
+	replyService.add(
+		{reply:"JS Test", replyer:"tester",bno:bnoValue}
+		,
+		function(result){
+			alert("RESULT: " + result);
+		}
+	);
+	
+	// for replyService List test
+	replyService.getList({bno:bnoValue, page:1}, function(list){
+		
+		for(var i = 0, len = list.length||0; i<len;	i++){
+			console.log(list[i]);
+		}
+		
+	});
+	
+	// for replyService Delete test
+	replyService.remove(23, function(count){
+		
+		console.log(count);
+		
+		if(count === "success"){
+			alert("REMOVED");
+		}
+		
+	}, fuction(err){
+		alert('ERROR...');
+	});
+	
+	//for replyService Update test
+	replyService.update({
+		
+		rno : 22,
+		bno : bnoValue,
+		reply : "Modifued Reply...."
+		}, fuction(result){
+			
+			alert("수정 완료");
+		});
+	
+	
+</script>
+
+<script type = "text/javascript">
+$(document).ready(function(){
+	
+	console.log(replyService);
+});
+
+</script>
 
 <script type="text/javascript">
 $(document).ready(function() {
